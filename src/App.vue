@@ -11,19 +11,22 @@
     </nav>
   </header>
   <main>
-    <HomePage />
+    <RobotBuilder />
   </main>
 </template>
 
 <script>
 // eslint-disable-next-line quotes
-import HomePage from "./components/HomePage.vue";
+// import HomePage from "./home/HomePage.vue";
+// eslint-disable-next-line quotes
+import RobotBuilder from "./build/RobotBuilder.vue";
 
 export default {
   // eslint-disable-next-line quotes
   name: "App",
   components: {
-    HomePage,
+    // HomePage,
+    RobotBuilder,
   },
 };
 </script>
