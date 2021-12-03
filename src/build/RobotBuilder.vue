@@ -16,21 +16,21 @@ eslint-disable quotes */
         <button @click="selectPrevLeftArm()" class="next-selector">&#9660;</button>
       </div>
       <div class="center part">
-        <img v-bind:src="availabeParts.torsos[0].src" title="left arm" />
-        <button class="prev-selector">&#9668;</button>
-        <button class="next-selector">&#9658;</button>
+        <img :src="selectedRobot.torso.src" title="left arm" />
+        <button @click="selectPrevTorso()" class="prev-selector">&#9668;</button>
+        <button @click="selectNextTorso()" class="next-selector">&#9658;</button>
       </div>
       <div class="right part">
-        <img v-bind:src="availabeParts.arms[0].src" title="left arm" />
-        <button class="prev-selector">&#9650;</button>
-        <button class="next-selector">&#9660;</button>
+        <img :src="selectedRobot.rightArm.src" title="left arm" />
+        <button @click="selectPrevRightArm()" class="prev-selector">&#9650;</button>
+        <button @click="selectNextRightArm()" class="next-selector">&#9660;</button>
       </div>
     </div>
     <div class="bottom-row">
       <div class="bottom part">
-        <img v-bind:src="availabeParts.bases[0].src" title="left arm" />
-        <button class="prev-selector">&#9668;</button>
-        <button class="next-selector">&#9658;</button>
+        <img :src="selectedRobot.bottom.src" title="left arm" />
+        <button @click="selectPrevBottom()" class="prev-selector">&#9668;</button>
+        <button @click="selectNextBottom()" class="next-selector">&#9658;</button>
       </div>
     </div>
   </div>
@@ -59,6 +59,9 @@ export default {
       availabeParts,
       selectedHeadIndex: 0,
       selectedLeftArmIndex: 0,
+      selectedTorsoIndex: 0,
+      selectedRightArmIndex: 0,
+      selectedBottomIndex: 0,
     };
   },
   computed: {
@@ -66,6 +69,9 @@ export default {
       return {
         head: availabeParts.heads[this.selectedHeadIndex],
         leftArm: availabeParts.arms[this.selectedLeftArmIndex],
+        torso: availabeParts.torsos[this.selectedTorsoIndex],
+        rightArm: availabeParts.arms[this.selectedRightArmIndex],
+        bottom: availabeParts.bases[this.selectedBottomIndex],
       };
     },
   },
@@ -89,6 +95,52 @@ export default {
       this.selectedLeftArmIndex = getPreviousValidIndex(
         // eslint-disable-next-line comma-dangle
         this.selectedLeftArmIndex,
+        // eslint-disable-next-line comma-dangle
+        parts.length
+      );
+    },
+
+    selectNextTorso() {
+      this.selectedTorsoIndex = getNextValidIndex(
+        this.selectedTorsoIndex,
+        // eslint-disable-next-line comma-dangle
+        parts.length
+      );
+    },
+    selectPrevTorso() {
+      this.selectedTorsoIndex = getPreviousValidIndex(
+        // eslint-disable-next-line comma-dangle
+        this.selectedTorsoIndex,
+        // eslint-disable-next-line comma-dangle
+        parts.length
+      );
+    },
+    selectNextRightArm() {
+      this.selectedRightArmIndex = getNextValidIndex(
+        this.selectedRightArmIndex,
+        // eslint-disable-next-line comma-dangle
+        parts.length
+      );
+    },
+    selectPrevRightArm() {
+      this.selectedRightArmIndex = getPreviousValidIndex(
+        // eslint-disable-next-line comma-dangle
+        this.selectedRightArmIndex,
+        // eslint-disable-next-line comma-dangle
+        parts.length
+      );
+    },
+    selectNextBottom() {
+      this.selectedBottomIndex = getNextValidIndex(
+        this.selectedBottomIndex,
+        // eslint-disable-next-line comma-dangle
+        parts.length
+      );
+    },
+    selectPrevBottom() {
+      this.selectedBottomIndex = getPreviousValidIndex(
+        // eslint-disable-next-line comma-dangle
+        this.selectedBottomIndex,
         // eslint-disable-next-line comma-dangle
         parts.length
       );
