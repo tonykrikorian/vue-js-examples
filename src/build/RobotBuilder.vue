@@ -1,18 +1,19 @@
-/* eslint-disable quotes */ /* eslint-disable quotes */ /* eslint-disable quotes */
+/* eslint-disable quotes */ /* eslint-disable quotes */ /* eslint-disable quotes */ /*
+eslint-disable quotes */
 <template>
   <div>
     <div class="top-row">
       <div class="top part">
-        <img v-bind:src="availabeParts.heads[0].src" title="head" />
-        <button class="prev-selector">&#9668;</button>
-        <button class="next-selector">&#9658;</button>
+        <img v-bind:src="availabeParts.heads[selectedHeadIndex].src" title="head" />
+        <button v-on:click="selectPrevHead()" class="prev-selector">&#9668;</button>
+        <button v-on:click="selectNextHead()" class="next-selector">&#9658;</button>
       </div>
     </div>
     <div class="middle-row">
       <div class="left part">
-        <img v-bind:src="availabeParts.arms[0].src" title="left arm" />
-        <button class="prev-selector">&#9650;</button>
-        <button class="next-selector">&#9660;</button>
+        <img :src="selectedRobot.leftArm.src" title="left arm" />
+        <button @click="selectNextLeftArm()" class="prev-selector">&#9650;</button>
+        <button @click="selectPrevLeftArm()" class="next-selector">&#9660;</button>
       </div>
       <div class="center part">
         <img v-bind:src="availabeParts.torsos[0].src" title="left arm" />
@@ -39,11 +40,59 @@
 // eslint-disable-next-line quotes
 import availabeParts from "../data/parts";
 
+const parts = availabeParts.heads;
+
+function getPreviousValidIndex(index, length) {
+  const deprecatedIndex = index - 1;
+  return deprecatedIndex < 0 ? length - 1 : deprecatedIndex;
+}
+function getNextValidIndex(index, length) {
+  const incrementedIndex = index + 1;
+  return incrementedIndex > length - 1 ? 0 : incrementedIndex;
+}
+
 export default {
   // eslint-disable-next-line quotes
   name: "RobotBuilder",
   data() {
-    return { availabeParts };
+    return {
+      availabeParts,
+      selectedHeadIndex: 0,
+      selectedLeftArmIndex: 0,
+    };
+  },
+  computed: {
+    selectedRobot() {
+      return {
+        head: availabeParts.heads[this.selectedHeadIndex],
+        leftArm: availabeParts.arms[this.selectedLeftArmIndex],
+      };
+    },
+  },
+  methods: {
+    selectNextHead() {
+      // eslint-disable-next-line quotes
+      this.selectedHeadIndex = getNextValidIndex(this.selectedHeadIndex, parts.length);
+    },
+    selectPrevHead() {
+      this.selectedHeadIndex = getPreviousValidIndex(this.selectedHeadIndex, parts.length);
+    },
+
+    selectNextLeftArm() {
+      this.selectedLeftArmIndex = getNextValidIndex(
+        this.selectedLeftArmIndex,
+        // eslint-disable-next-line comma-dangle
+        parts.length
+      );
+    },
+    selectPrevLeftArm() {
+      this.selectedLeftArmIndex = getPreviousValidIndex(
+        // eslint-disable-next-line comma-dangle
+        this.selectedLeftArmIndex,
+        // eslint-disable-next-line comma-dangle
+        parts.length
+      );
+    },
   },
 };
 </script>
