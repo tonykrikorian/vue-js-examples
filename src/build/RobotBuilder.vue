@@ -1,9 +1,17 @@
 /* eslint-disable quotes */ /* eslint-disable quotes */ /* eslint-disable quotes */ /*
 eslint-disable quotes */
 <template>
-  <div>
+  <div class="content">
+    <button class="add-to-cart" @click="addToCart()" :disabled="isCartButtonDisabled">
+      Add to Cart
+    </button>
     <div class="top-row">
-      <div class="top part">
+      <!-- <div class="top part" :class="{ 'sale-border': selectedRobot.head.onSale }"> -->
+      <div :class="[saleBorderClass, 'top', 'part']">
+        <div class="robot-name">
+          {{ selectedRobot.head.title }}
+          <span v-if="selectedRobot.head.onSale" class="sale">Sale!</span>
+        </div>
         <img v-bind:src="availabeParts.heads[selectedHeadIndex].src" title="head" />
         <button v-on:click="selectPrevHead()" class="prev-selector">&#9668;</button>
         <button v-on:click="selectNextHead()" class="next-selector">&#9658;</button>
@@ -32,6 +40,23 @@ eslint-disable quotes */
         <button @click="selectPrevBottom()" class="prev-selector">&#9668;</button>
         <button @click="selectNextBottom()" class="next-selector">&#9658;</button>
       </div>
+    </div>
+    <div>
+      <h1>Cart</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Robot</th>
+            <th class="cost">Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(robot, index) in cart" :key="index">
+            <td>{{ robot.head.title }}</td>
+            <td class="cost">{{ robot.cost }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -62,9 +87,24 @@ export default {
       selectedTorsoIndex: 0,
       selectedRightArmIndex: 0,
       selectedBottomIndex: 0,
+      cart: [],
     };
   },
   computed: {
+    isCartButtonDisabled() {
+      return !this.selectedRobot.head.onSale;
+    },
+    saleBorderClass() {
+      // eslint-disable-next-line quotes
+      return this.selectedRobot.head.onSale ? "sale-border" : "";
+    },
+    headBorderStyle() {
+      // eslint-disable-next-line quotes
+      return {
+        // eslint-disable-next-line quotes
+        border: this.selectedRobot.head.onSale ? "3px solid red" : "3px solid #aaa",
+      };
+    },
     selectedRobot() {
       return {
         head: availabeParts.heads[this.selectedHeadIndex],
@@ -76,6 +116,18 @@ export default {
     },
   },
   methods: {
+    addToCart() {
+      const robot = this.selectedRobot;
+      const cost =
+        robot.head.cost +
+        robot.leftArm.cost +
+        robot.rightArm.cost +
+        robot.torso.cost +
+        robot.bottom.cost;
+
+      // eslint-disable-next-line prefer-object-spread
+      this.cart.push(Object.assign({}, robot, { cost }));
+    },
     selectNextHead() {
       // eslint-disable-next-line quotes
       this.selectedHeadIndex = getNextValidIndex(this.selectedHeadIndex, parts.length);
@@ -149,7 +201,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .part {
   position: relative;
   width: 165px;
@@ -238,5 +290,42 @@ export default {
 }
 .right .next-selector {
   right: -3px;
+}
+
+.robot-name {
+  position: absolute;
+  top: -25px;
+  text-align: center;
+  width: 100%;
+}
+.sale {
+  color: red;
+}
+
+.content {
+  position: relative;
+}
+
+.add-to-cart {
+  position: absolute;
+  right: 30px;
+  width: 220px;
+  padding: 3px;
+  font-size: 16px;
+}
+
+td,
+th {
+  text-align: left;
+  padding: 5px;
+  padding-right: 20px;
+}
+
+.cost {
+  text-align: right;
+}
+
+.sale-border {
+  border: 3px solid red;
 }
 </style>
