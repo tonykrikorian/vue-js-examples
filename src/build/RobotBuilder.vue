@@ -64,6 +64,8 @@ eslint-disable quotes */
 <script>
 // eslint-disable-next-line quotes
 import availabeParts from "../data/parts";
+// eslint-disable-next-line quotes
+import createdHookMixin from "./created-hook-mixin";
 
 const parts = availabeParts.heads;
 
@@ -77,6 +79,7 @@ function getNextValidIndex(index, length) {
 }
 
 export default {
+  mixins: [createdHookMixin],
   // eslint-disable-next-line quotes
   name: "RobotBuilder",
   data() {
