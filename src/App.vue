@@ -19,13 +19,14 @@
 // eslint-disable-next-line quotes
 // import HomePage from "./home/HomePage.vue";
 // eslint-disable-next-line quotes
+// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line quotes
 import RobotBuilder from "./build/RobotBuilder.vue";
 
 export default {
   // eslint-disable-next-line quotes
   name: "App",
   components: {
-    // HomePage,
     RobotBuilder,
   },
 };
